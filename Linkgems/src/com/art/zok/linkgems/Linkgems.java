@@ -144,7 +144,6 @@ public class Linkgems extends Game {
             _batch.draw(_cursor, _mousePos.x, _mousePos.y);
         }
         _batch.end();
-        System.out.println("");
     }
     
     public boolean changeScreen(String key) {
@@ -189,5 +188,9 @@ public class Linkgems extends Game {
     
     public AssetManager getAssetManager() {
         return _assetManager;
+    }
+    
+    public Vector3 getMousePos() {
+    	return _mousePos;
     }
 }

@@ -3,14 +3,13 @@ package com.art.zok.linkgems.screen;
 import com.art.zok.linkgems.Linkgems;
 import com.art.zok.linkgems.util.Constants;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 
 /**
  * <p>This class done assets loading logic and handle same input.</p>
@@ -58,6 +57,10 @@ public abstract class AbstractScreen implements Screen, InputProcessor {
                 (Constants.VIEWPORT_HEIGHT - _loadingTxtBounds.height) / 2);
     }
     
+    
+    /**
+     * 重置必要的游戏状态
+     */
     @Override
     public void resume() {
         _state = State.Loading; 
@@ -71,32 +74,9 @@ public abstract class AbstractScreen implements Screen, InputProcessor {
         return true;
     }
 
-    /* 测试代码 */
     @Override
-    public boolean keyDown(int keycode) {
-        switch (keycode) {
-        case Input.Keys.M:
-            _parent.changeScreen(Constants.MENU_SCREEN);
-            break;
-        case Input.Keys.T:
-            _parent.changeScreen(Constants.TUTORIAL_SCREEN);
-            break;
-        case Input.Keys.G:
-            _parent.changeScreen(Constants.GAME_SCREEN);
-            break;
-        default:
-            break;
-        }
-        return true;
-    }
-
-    /* 测试代码 */
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) { 
-        Gdx.app.exit();
-        return true; 
-    }
-    
-    @Override
+    public boolean keyDown(int keycode) { return false; }
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {   return false;  }
     public boolean touchUp(int screenX, int screenY, int pointer, int button) { return false; }
     public boolean touchDragged(int screenX, int screenY, int pointer) { return false; }
     public boolean keyTyped(char character) { return false; }
@@ -105,11 +85,29 @@ public abstract class AbstractScreen implements Screen, InputProcessor {
     public void resize(int width, int height) {}
     public void pause() {}
     
+    /**
+     * 完成本屏游戏资源的预加载
+     */
     @Override
     public abstract void show();
+    /**
+     * 卸载本屏游戏资源
+     */
     public abstract void hide();
+    /**
+     * 获取资源并初始化成员变量
+     */
     public abstract void assignAssets();
+    /**
+     * 更新游戏世界
+     */
     public abstract void update(float delta);
+    /**
+     * 渲染游戏模型 
+     */
     public abstract void render();
+    /**
+     * 可以不用
+     */
     public abstract void dispose();
 }

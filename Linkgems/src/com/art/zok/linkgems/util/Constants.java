@@ -24,4 +24,5 @@ public class Constants {
     public static final String MENU_START = "Start";
     public static final String MENU_TUTORIAL = "Tutorial";
     public static final String MENU_EXIT = "Exit";
+    public static final String[] MENU_OPTIONS = {MENU_START, MENU_TUTORIAL, MENU_EXIT};
 }

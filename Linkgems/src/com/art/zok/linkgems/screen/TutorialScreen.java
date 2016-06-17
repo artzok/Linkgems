@@ -1,6 +1,8 @@
 package com.art.zok.linkgems.screen;
 
 import com.art.zok.linkgems.Linkgems;
+import com.art.zok.linkgems.util.Constants;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -42,5 +44,13 @@ public class TutorialScreen extends AbstractScreen {
 
     @Override
     public void dispose() {
+    }
+    
+    @Override
+    public boolean keyDown(int keycode) {
+    	if(keycode == Input.Keys.ESCAPE) {
+    		_parent.changeScreen(Constants.MENU_SCREEN);
+    	}
+    	return true;
     }
 }
