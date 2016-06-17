@@ -3,7 +3,9 @@ package com.art.zok.linkgems.screen;
 import com.art.zok.linkgems.Linkgems;
 import com.art.zok.linkgems.util.Constants;
 import com.art.zok.linkgems.util.Tools;
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.assets.loaders.BitmapFontLoader.BitmapFontParameter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -175,6 +177,13 @@ public class MenuScreen extends AbstractScreen {
     
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+    	// 由于移动设备不会调用mouseMoved,因此需要再次获得选项
+		_currentOption = getOption(_parent.getMousePos());
+    	return true;
+    }
+    
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
     	switch (_currentOption) {
 		case 0:
 			_parent.changeScreen(Constants.GAME_SCREEN);
