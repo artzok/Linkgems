@@ -19,4 +19,9 @@ public class Constants {
     public static final String[] gemsPath = { "images/gemBlue.png",
     	"images/gemGreen.png", "images/gemOrange.png", "images/gemPurple.png",
     	"images/gemRed.png", "images/gemWhite.png", "images/gemYellow.png" };
+    
+    // menu string
+    public static final String MENU_START = "Start";
+    public static final String MENU_TUTORIAL = "Tutorial";
+    public static final String MENU_EXIT = "Exit";
 }
