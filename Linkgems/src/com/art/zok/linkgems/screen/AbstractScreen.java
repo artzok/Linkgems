@@ -13,10 +13,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
- * The abstract class <code>AbstractScreen</code> implements 
- * <code>Screen</code> and <code>InputProcess</code> interface,
- * which class is all UI of the game father class.
- * 
  * <p>This class done assets loading logic and handle same input.</p>
  * 
  * @author artzok 
