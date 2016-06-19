@@ -98,7 +98,7 @@ public class MenuScreen extends AbstractScreen {
     	if(_animTime < _totalTime * 2) {
     		_animTime += delta;
     	}
-    	// 动画执行完成之后激活输入
+    	// enable input after animation
     	else {
     		Gdx.input.setInputProcessor(this);
     	}
@@ -165,7 +165,7 @@ public class MenuScreen extends AbstractScreen {
     	super.resume();
     	 _animTime = 0.0f;
     	_currentOption = -1;
-    	// 禁用输入
+    	// disable input
         Gdx.input.setInputProcessor(null);
     }
     
@@ -185,7 +185,8 @@ public class MenuScreen extends AbstractScreen {
     
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-    	// 由于移动设备不会调用mouseMoved,因此需要再次获得选项
+    	// because Android  and IOS never call mouseMoved method,
+    	// so we need to update current option
     	_currentOption = getOption(_parent.getMousePos());
     	return true;
     }

@@ -59,7 +59,7 @@ public abstract class AbstractScreen implements Screen, InputProcessor {
     
     
     /**
-     * 重置必要的游戏状态
+     * reset some state of current screen
      */
     @Override
     public void resume() {
@@ -86,28 +86,28 @@ public abstract class AbstractScreen implements Screen, InputProcessor {
     public void pause() {}
     
     /**
-     * 完成本屏游戏资源的预加载
+     * load assets
      */
     @Override
     public abstract void show();
     /**
-     * 卸载本屏游戏资源
+     * unload assets
      */
     public abstract void hide();
     /**
-     * 获取资源并初始化成员变量
+     * initialize member with assets
      */
     public abstract void assignAssets();
     /**
-     * 更新游戏世界
+     * update game world
      */
     public abstract void update(float delta);
     /**
-     * 渲染游戏模型 
+     * render game model
      */
     public abstract void render();
     /**
-     * 可以不用
+     * maybe not use
      */
     public abstract void dispose();
 }

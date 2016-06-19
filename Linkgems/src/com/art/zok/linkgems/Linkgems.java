@@ -47,49 +47,49 @@ public class Linkgems extends Game {
         _batch = new SpriteBatch();
         _assetManager = new AssetManager();
         
-        // 载入“Loading”字体
+        // load "Loading" font
         BitmapFontParameter parameter = new BitmapFontParameter();
         parameter.flip = true;
         parameter.minFilter = TextureFilter.Linear;
         parameter.magFilter = TextureFilter.Linear;
         _assetManager.load("fonts/loadingFont.fnt", BitmapFont.class, parameter);
         
-        // 载入鼠标纹理
+        // load mouse texture 
         _assetManager.load("images/handCursor.png", Texture.class);
         
         _assetManager.finishLoading();
         
-        // 获取字体对象
+        // get "loading" font
         _fontLoading = _assetManager.get("fonts/loadingFont.fnt", BitmapFont.class);
         _fontLoading.setScale(1.5f);
         
-        // 获取光标纹理
+        // get cursor texture
         _cursor = new TextureRegion(
                 _assetManager.get("images/handCursor.png", Texture.class));
         _cursor.flip(false, true);
         
-        // 创建鼠标坐标对象
+        // create mouse position 
         _mousePos = new Vector3();
         
-        // 捕获鼠标
+        // catch mouse for desktop platform
         Gdx.input.setCursorCatched(true);
         
-        // 创建相机
+        // create camera
         _camera = new OrthographicCamera(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         _camera.setToOrtho(true, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         _camera.update();
         
-        // 创建gl视口
+        // create "gl viewport"
         _glviewport = new Rectangle(0, 0, Gdx.graphics.getWidth(), 
                 Gdx.graphics.getHeight());
         
-        // 创建屏幕列表
+        // create list of screen
         _screens = new HashMap<String, AbstractScreen>();
         _screens.put(MENU_SCREEN, new MenuScreen(this));
         _screens.put(TUTORIAL_SCREEN, new TutorialScreen(this));
         _screens.put(GAME_SCREEN, new GameScreen(this));
         
-        // 设置初始屏幕
+        // set default screen
         changeScreen(MENU_SCREEN);
     }
     
@@ -104,14 +104,10 @@ public class Linkgems extends Game {
         {
             scale = (float)height / (float)VIEWPORT_HEIGHT;
             crop.x = (width - VIEWPORT_WIDTH * scale) / 2.0f;
-        }
-        else if(aspectRatio < ASPECT_RATIO)
-        {
+        } else if(aspectRatio < ASPECT_RATIO) {
             scale = (float)width / (float)VIEWPORT_WIDTH;
             crop.y = (height - VIEWPORT_HEIGHT * scale) / 2.0f;
-        }
-        else
-        {
+        } else {
             scale = (float)width/(float)VIEWPORT_WIDTH;
         }
 
@@ -133,9 +129,10 @@ public class Linkgems extends Game {
         
         _batch.begin();
         
-        // 渲染当前屏幕
+        // render current screen
         super.render();
-
+        
+        // render mouse
         if(Gdx.app.getType() == ApplicationType.Desktop) {
             _mousePos.x = Gdx.input.getX();
             _mousePos.y = Gdx.input.getY();
@@ -153,20 +150,20 @@ public class Linkgems extends Game {
         if(nextScreen == null || nextScreen == curScreen) 
             return false;
         
-        // 暂停当前屏幕
+        // set current screen to pause
         if(curScreen != null)
             curScreen.pause();
         
-        // 置空输入处理器
+        // disable input
         Gdx.input.setInputProcessor(null);
         
-        // 切换屏幕
+        // change screen
         setScreen(nextScreen);
 
-        // 激活输入处理器
+        // enable input
         Gdx.input.setInputProcessor(nextScreen);
         
-        // 重置当前屏幕的初始状态
+        // reset some state of current screen
         nextScreen.resume();
         
         return true;

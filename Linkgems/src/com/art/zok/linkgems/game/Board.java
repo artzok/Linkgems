@@ -15,6 +15,7 @@ public class Board {
 		_random = new Random();
 	}
 	
+	// create and fill board
 	public void generateBoard() {
 		List<Coord> listPos = new ArrayList<>(8 * 8);
 		
@@ -36,10 +37,12 @@ public class Board {
 		}
 	}
 	
+	// get specified square
 	public Square getSquare(int x, int y) {
 		return _squares[x][y];
 	}
 	
+	// doing match 
 	public List<Coord> matches(Coord src, Coord dest) {
 		if((src.x == dest.x && src.y == dest.y) ||
 			_squares[src.x][src.y].getType() != _squares[dest.x][dest.y].getType())
@@ -48,7 +51,7 @@ public class Board {
 	}
 	
 	
-	/*1折连接*/
+	/*direct link*/
 	private boolean matchBlock(Coord src, Coord dest) {
 		if(src.x != dest.x && src.y != dest.y) 
 			return false;
@@ -77,7 +80,7 @@ public class Board {
 	}
 	
 	
-	/*1折连接*/
+	/*	one block link	*/
 	private Coord matchOneBlock(Coord src, Coord dest) {
 		// if direct link 
 		if(matchBlock(src, dest))
@@ -96,7 +99,7 @@ public class Board {
 	}
 	
 	
-	/*1折连接*/
+	/*two block link	*/
 	private List<Coord> matchTwoBlock(Coord src, Coord dest) {
 		
 		Coord temp, find;
