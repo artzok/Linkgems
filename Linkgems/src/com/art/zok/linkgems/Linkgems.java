@@ -162,12 +162,12 @@ public class Linkgems extends Game {
         
         // 切换屏幕
         setScreen(nextScreen);
+
+        // 激活输入处理器
+        Gdx.input.setInputProcessor(nextScreen);
         
         // 重置当前屏幕的初始状态
         nextScreen.resume();
-        
-        // 激活输入处理器
-        Gdx.input.setInputProcessor(nextScreen);
         
         return true;
     }

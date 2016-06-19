@@ -3,9 +3,7 @@ package com.art.zok.linkgems.screen;
 import com.art.zok.linkgems.Linkgems;
 import com.art.zok.linkgems.util.Constants;
 import com.art.zok.linkgems.util.Tools;
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.assets.loaders.BitmapFontLoader.BitmapFontParameter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -19,7 +17,7 @@ public class MenuScreen extends AbstractScreen {
     private TextureRegion _background;
     private TextureRegion _mainLogo;
     private TextureRegion _highLight;
-    private TextureRegion[] _regionGems;
+    private TextureRegion[] _gemRegions;
     private TextBounds[] _menuOptTxtBounds;
     
     private BitmapFont _menuFont;
@@ -31,10 +29,8 @@ public class MenuScreen extends AbstractScreen {
     
     public MenuScreen(Linkgems linkgems) {
         super(linkgems);
-        _animTime = 0.0f;
         _totalTime = 0.8f;
-        _currentOption = -1;
-        _regionGems = new TextureRegion[7];
+        _gemRegions = new TextureRegion[Constants.GEMSLENGTH];
     }
 
     @Override
@@ -48,8 +44,8 @@ public class MenuScreen extends AbstractScreen {
         parameter.minFilter = TextureFilter.Linear;
         _assetManager.load("fonts/menuFont.fnt", BitmapFont.class, parameter);
         
-        for(int i = 0; i < Constants.gemsPath.length; i++) {
-        	_assetManager.load(Constants.gemsPath[i], Texture.class);
+        for(int i = 0; i < Constants.GEMSPATH.length; i++) {
+        	_assetManager.load(Constants.GEMSPATH[i], Texture.class);
         }
     }
 
@@ -59,8 +55,8 @@ public class MenuScreen extends AbstractScreen {
         _assetManager.unload("images/mainMenuLogo.png");
         _assetManager.unload("images/menuHighlight.png");
         _assetManager.unload("fonts/menuFont.fnt");
-        for(int i = 0; i < Constants.gemsPath.length; i++) {
-        	_assetManager.unload(Constants.gemsPath[i]);
+        for(int i = 0; i < Constants.GEMSPATH.length; i++) {
+        	_assetManager.unload(Constants.GEMSPATH[i]);
         }
     }
     
@@ -79,9 +75,9 @@ public class MenuScreen extends AbstractScreen {
        _highLight = Tools.textureToRegion(texture, true);
        
        // gems
-       for(int i = 0; i < Constants.gemsPath.length; i++) {
-    	   texture = _assetManager.get(Constants.gemsPath[i]);
-           _regionGems[i] = Tools.textureToRegion(texture, true);
+       for(int i = 0; i < Constants.GEMSPATH.length; i++) {
+    	   texture = _assetManager.get(Constants.GEMSPATH[i]);
+           _gemRegions[i] = Tools.textureToRegion(texture, true);
        }
        
        // menu font
@@ -99,8 +95,13 @@ public class MenuScreen extends AbstractScreen {
     
     @Override
     public void update(float delta) {
-    	if(_animTime < _totalTime * 2)
+    	if(_animTime < _totalTime * 2) {
     		_animTime += delta;
+    	}
+    	// 动画执行完成之后激活输入
+    	else {
+    		Gdx.input.setInputProcessor(this);
+    	}
     }
     
     @Override
@@ -124,11 +125,14 @@ public class MenuScreen extends AbstractScreen {
         		continue;
         	else {
         		if(componentTime > _totalTime) {
-        			_batch.draw(_regionGems[i], (Constants.VIEWPORT_WIDTH - 78 * 7) / 2 + i * 78, 278);
+        			_batch.draw(_gemRegions[i], (Constants.VIEWPORT_WIDTH - 
+        					Constants.GEMS_SIZE * 7) / 2 + i * Constants.GEMS_SIZE, Constants.MENU_GEMS_HORI_POS);
         		} else {
         			percent = componentTime / _totalTime;
-        			_batch.draw(_regionGems[i], (Constants.VIEWPORT_WIDTH - 78 * 7) / 2 + i * 78, 
-        					-600 * ((percent - 1) * (percent - 1) * (percent - 1) + 1) + 600 + 278);
+        			_batch.draw(_gemRegions[i], (Constants.VIEWPORT_WIDTH - 
+        					Constants.GEMS_SIZE * Constants.GEMSLENGTH) / 2 + i * Constants.GEMS_SIZE, 
+        					-600 * ((percent - 1) * (percent - 1) * (percent - 1) + 1) + 600 + 
+        					Constants.MENU_GEMS_HORI_POS);
         		}
         	}
         }
@@ -140,25 +144,29 @@ public class MenuScreen extends AbstractScreen {
         	_menuFont.setColor(0.0f, 0.0f, 0.0f,0.5f);
         	_menuFont.draw(_batch, Constants.MENU_OPTIONS[i], 
         			(Constants.VIEWPORT_WIDTH - _menuOptTxtBounds[i].width) / 2.0f + 4, 
-        			390.0f + i * 100 + 4);
+        			Constants.MENU_OPTS_START_OF_Y + i * Constants.MENU_OPTS_GAP + 4);
         	
         	// render options
         	_menuFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         	_menuFont.draw(_batch, Constants.MENU_OPTIONS[i], 
         			(Constants.VIEWPORT_WIDTH - _menuOptTxtBounds[i].width) / 2.0f, 
-        			390.0f + i * 100);
+        			Constants.MENU_OPTS_START_OF_Y + i * Constants.MENU_OPTS_GAP);
         	
         	//render high light if need
         	if(_currentOption != i) continue;
         	_batch.draw(_highLight, (Constants.VIEWPORT_WIDTH - _highLight.getRegionWidth()) / 2.0f, 
-        			390.0f + i * 100, _highLight.getRegionWidth(),  100.0f);
+        			Constants.MENU_OPTS_START_OF_Y + i * Constants.MENU_OPTS_GAP, 
+        			_highLight.getRegionWidth(),  Constants.MENU_OPTS_GAP);
         }
     }
 
     @Override
     public void resume() {
     	super.resume();
+    	 _animTime = 0.0f;
     	_currentOption = -1;
+    	// 禁用输入
+        Gdx.input.setInputProcessor(null);
     }
     
     @Override
@@ -178,7 +186,7 @@ public class MenuScreen extends AbstractScreen {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
     	// 由于移动设备不会调用mouseMoved,因此需要再次获得选项
-		_currentOption = getOption(_parent.getMousePos());
+    	_currentOption = getOption(_parent.getMousePos());
     	return true;
     }
     
